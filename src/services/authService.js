@@ -3,12 +3,12 @@ import api from "../utils/api";
 
 const authService = {
   register: async (payload) => {
-    const resp = await api.post("/auth/register", payload);
+    const resp = await api.post("/api/auth/register", payload);
     return resp.data;
   },
 
   login: async (payload) => {
-    const resp = await api.post("/auth/login", payload);
+    const resp = await api.post("/api/auth/login", payload);
     return resp.data;
   },
 

@@ -1,14 +1,12 @@
 // src/utils/api.js
 import axios from "axios";
 
-// prefer the env value; fall back to the backend URL your server is actually listening on
 const baseURL = import.meta.env.VITE_API_BASE_URL || "https://localhost:7257";
-
 console.log("API base URL:", baseURL);
 
 const api = axios.create({
   baseURL,
-  withCredentials: true,
+  withCredentials: false, // <-- false for bearer token flows
 });
 
 api.interceptors.request.use(

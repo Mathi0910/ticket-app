@@ -11,15 +11,20 @@ export default function Login() {
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+  e.preventDefault();
+  setError("");
+  try {
     const result = await login(form);
     if (!result.ok) {
       setError(result.error || "Invalid email or password");
       return;
     }
     navigate("/dashboard");
-  };
+  } catch (err) {
+    setError("Unexpected error");
+  }
+};
+
 
   return (
     <div style={{ minHeight: "100vh", display: "grid", placeItems: "center" }}>

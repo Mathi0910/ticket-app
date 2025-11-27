@@ -33,30 +33,39 @@ export const AuthProvider = ({ children }) => {
   }, [navigate]);
 
   const login = async (payload) => {
-    try {
-      const data = await authService.login(payload);
-      const tokenValue = data?.Token ?? null;
-      const userObj = (data?.Email && data?.Role) ? { email: data.Email, role: data.Role } : null;
+  try {
+    const data = await authService.login(payload);
 
-      if (tokenValue) {
-        localStorage.setItem("token", tokenValue);
-        setToken(tokenValue);
-      }
+    const tokenValue = data?.Token ?? data?.token ?? null;
+    const emailValue = data?.Email ?? data?.email ?? null;
+    const roleValue = data?.Role ?? data?.role ?? null;
 
-      if (userObj) {
-        localStorage.setItem("user", JSON.stringify(userObj));
-        setUser(userObj);
-      } else {
-        localStorage.removeItem("user");
-        setUser(null);
-      }
+    const userObj = emailValue ? { email: emailValue, role: roleValue ?? "Customer" } : null;
 
-      return { ok: true, data };
-    } catch (err) {
-      return { ok: false, error: err?.response?.data ?? err?.message ?? "Login failed" };
+    if (tokenValue) {
+      localStorage.setItem("token", tokenValue);
+      setToken(tokenValue);
+    } else {
+      localStorage.removeItem("token");
+      setToken(null);
     }
-  };
 
+    if (userObj) {
+      localStorage.setItem("user", JSON.stringify(userObj));
+      setUser(userObj);
+    } else {
+      localStorage.removeItem("user");
+      setUser(null);
+    }
+
+    return { ok: true, data };
+  } catch (err) {
+    return { ok: false, error: err?.response?.data ?? err?.message ?? "Login failed" };
+  }
+};
+
+
+  
   const register = async (payload) => {
     try {
       const data = await authService.register(payload);

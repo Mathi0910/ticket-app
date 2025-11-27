@@ -27,3 +27,4 @@ const remove = async (id) => {
 };
 
 export default { getAll, getById, create, update, remove };
+

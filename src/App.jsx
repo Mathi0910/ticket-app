@@ -34,8 +34,9 @@ function DashboardRouter() {
   if (!rawUser) return <Navigate to="/auth/login" replace />;
   const role = rawUser.role || rawUser.Role;
   if (role === "Admin") return <Navigate to="/admin/tickets" replace />;
-  if (role === "Support") return <Navigate to="/agent/tickets" replace />;
-  return <Navigate to="/tickets" replace />;
+if (role === "Support") return <Navigate to="/agent/tickets" replace />;
+return <Navigate to="/dashboard" replace />;
+
 }
 
 export default function App() {
@@ -43,11 +44,13 @@ export default function App() {
     <Routes>
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/register" element={<Register />} />
-      <Route path="/dashboard" element={<PrivateRoute><DashboardRouter/></PrivateRoute>} />
+      <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>} />
+
 
       {/* customer */}
       <Route path="/tickets" element={<PrivateRoute><RoleGuard allowed={["Customer"]}><MyTickets/></RoleGuard></PrivateRoute>} />
-      <Route path="/tickets/create" element={<PrivateRoute><RoleGuard allowed={["Customer"]}><CreateTicket/></RoleGuard></PrivateRoute>} />
+      <Route path="/tickets/create" element={<PrivateRoute><RoleGuard allowed={["Customer","Support","Admin"]}><CreateTicket/></RoleGuard></PrivateRoute>} />
+
       <Route path="/tickets/:id" element={<PrivateRoute><TicketView/></PrivateRoute>} />
 
       {/* support */}

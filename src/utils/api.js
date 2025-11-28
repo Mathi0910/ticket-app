@@ -6,7 +6,7 @@ console.log("API base URL:", baseURL);
 
 const api = axios.create({
   baseURL,
-  withCredentials: false, // <-- false for bearer token flows
+   withCredentials: false, // <-- false for bearer token flows
 });
 
 api.interceptors.request.use(

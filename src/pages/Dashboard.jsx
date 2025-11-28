@@ -4,11 +4,15 @@ import TicketCard from "./components/TicketCard";
 import "./Dashboard.css";
 import ticketService from "../services/ticketService"; // your service to call /api/tickets
 import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+// inside component
+
 
 export default function Dashboard() {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let mounted = true;
@@ -50,9 +54,13 @@ export default function Dashboard() {
           <h1>Ticket System</h1>
           <div className="dash-sub">Welcome {user?.email ?? "User"}</div>
         </div>
-        <div className="dash-actions">
-          <button className="btn-primary">Create Ticket</button>
-        </div>
+        
+
+<div className="dash-actions">
+  <button className="btn-primary" onClick={() => navigate("/tickets/create")}>Create Ticket</button>
+</div>
+
+        
       </header>
 
       <main className="dash-grid">

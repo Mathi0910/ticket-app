@@ -27,6 +27,7 @@ function RoleGuard({ allowed = [], children }) {
   if (!allowed.includes(user.role)) return <Navigate to="/dashboard" replace />;
   return children;
 }
+
 function DashboardRouter() {
   const { user } = useAuth();
   const local = typeof window !== "undefined" ? localStorage.getItem("user") : null;
@@ -34,9 +35,8 @@ function DashboardRouter() {
   if (!rawUser) return <Navigate to="/auth/login" replace />;
   const role = rawUser.role || rawUser.Role;
   if (role === "Admin") return <Navigate to="/admin/tickets" replace />;
-if (role === "Support") return <Navigate to="/agent/tickets" replace />;
-return <Navigate to="/dashboard" replace />;
-
+  if (role === "Support") return <Navigate to="/agent/tickets" replace />;
+  return <Navigate to="/dashboard" replace />;
 }
 
 export default function App() {
@@ -46,23 +46,86 @@ export default function App() {
       <Route path="/auth/register" element={<Register />} />
       <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>} />
 
-
       {/* customer */}
-      <Route path="/tickets" element={<PrivateRoute><RoleGuard allowed={["Customer"]}><MyTickets/></RoleGuard></PrivateRoute>} />
-      <Route path="/tickets/create" element={<PrivateRoute><RoleGuard allowed={["Customer","Support","Admin"]}><CreateTicket/></RoleGuard></PrivateRoute>} />
+      <Route
+        path="/tickets"
+        element={
+          <PrivateRoute>
+            <RoleGuard allowed={["Customer"]}>
+              <MyTickets/>
+            </RoleGuard>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/tickets/create"
+        element={
+          <PrivateRoute>
+            <RoleGuard allowed={["Customer","Support","Admin"]}>
+              <CreateTicket/>
+            </RoleGuard>
+          </PrivateRoute>
+        }
+      />
 
       <Route path="/tickets/:id" element={<PrivateRoute><TicketView/></PrivateRoute>} />
 
       {/* support */}
-      <Route path="/agent/tickets" element={<PrivateRoute><RoleGuard allowed={["Support"]}><AssignedTickets/></RoleGuard></PrivateRoute>} />
-      <Route path="/agent/tickets/:id" element={<PrivateRoute><RoleGuard allowed={["Support"]}><TicketWork/></RoleGuard></PrivateRoute>} />
+      <Route
+        path="/agent/tickets"
+        element={
+          <PrivateRoute>
+            <RoleGuard allowed={["Support"]}>
+              <AssignedTickets/>
+            </RoleGuard>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/agent/tickets/:id"
+        element={
+          <PrivateRoute>
+            <RoleGuard allowed={["Support"]}>
+              <TicketWork/>
+            </RoleGuard>
+          </PrivateRoute>
+        }
+      />
 
       {/* admin */}
-      <Route path="/admin/tickets" element={<PrivateRoute><RoleGuard allowed={["Admin"]}><AllTickets/></RoleGuard></PrivateRoute>} />
-      <Route path="/admin/tickets/:id/assign" element={<PrivateRoute><RoleGuard allowed={["Admin"]}><AssignTicket/></RoleGuard></PrivateRoute>} />
-      <Route path="/admin/users" element={<PrivateRoute><RoleGuard allowed={["Admin"]}><ManageUsers/></RoleGuard></PrivateRoute>} />
+      <Route
+        path="/admin/tickets"
+        element={
+          <PrivateRoute>
+            <RoleGuard allowed={["Admin"]}>
+              <AllTickets/>
+            </RoleGuard>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/tickets/:id/assign"
+        element={
+          <PrivateRoute>
+            <RoleGuard allowed={["Admin"]}>
+              <AssignTicket/>
+            </RoleGuard>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/users"
+        element={
+          <PrivateRoute>
+            <RoleGuard allowed={["Admin"]}>
+              <ManageUsers/>
+            </RoleGuard>
+          </PrivateRoute>
+        }
+      />
 
-      <Route path="/" element={<Navigate to="/auth/login" replace />} />
+      {/* root uses DashboardRouter to redirect based on role */}
+      <Route path="/" element={<DashboardRouter />} />
       <Route path="*" element={<div style={{ padding: 20 }}>404 — Page not found</div>} />
     </Routes>
   );

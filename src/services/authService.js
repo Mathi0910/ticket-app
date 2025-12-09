@@ -17,6 +17,11 @@ const authService = {
     localStorage.removeItem("user");
     window.dispatchEvent(new CustomEvent("auth:logout"));
   },
+
+  // Token getter used by SignalR and other parts of the app
+  getToken: () => {
+    return localStorage.getItem("token");
+  }
 };
 
 export default authService;

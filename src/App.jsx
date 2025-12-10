@@ -4,6 +4,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 
 /* pages (import only what you need) */
+// import "./styles/tickets.css"; 
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Dashboard from "./pages/Dashboard";
@@ -16,6 +17,7 @@ import AllTickets from "./pages/admin/AllTickets";
 import AssignTicket from "./pages/admin/AssignTicket";
 import ManageUsers from "./pages/admin/ManageUSers"; // keep exact filename you used
 import Reports from "./pages/admin/Reports";
+
 
 /* PrivateRoute and RoleGuard */
 function PrivateRoute({ children }) {

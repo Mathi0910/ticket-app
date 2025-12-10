@@ -1,0 +1,236 @@
+/* src/styles/tickets.css
+   Styles to make ticket list + right summary panel look modern and similar to your reference.
+   No CSS frameworks required.
+*/
+
+/* Variables (light palette) */
+/* debug: this should make the whole page background pink if the file is loaded */
+/* body { background: #ffeef0 !important; }
+.ticket-card { box-shadow: 0 6px 18px rgba(25,25,31,0.06) !important; background: #fff !important; } */
+
+:root {
+  --card-bg: #fff;
+  --card-padding: 16px;
+  --radius: 12px;
+  --shadow: 0 6px 18px rgba(0,0,0,0.06);
+  --muted: #6b6b6b;
+  --card-border: rgba(16, 24, 40, 0.04);
+}
+
+/* stronger rule to make it visually obvious while debugging */
+.ticket-card {
+  background: var(--card-bg) !important;
+  padding: var(--card-padding) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow) !important;
+  border: 1px solid var(--card-border) !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+/* Page container: two-column layout */
+.tickets-page {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--gap);
+  padding: 28px;
+  background: var(--bg);
+  min-height: calc(100vh - 72px);
+  box-sizing: border-box;
+}
+
+/* Responsive: single column on small screens */
+@media (max-width: 980px) {
+  .tickets-page {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+}
+
+/* Left column (list) */
+.tickets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Ticket card */
+.ticket-card {
+  background: var(--card-bg);
+  padding: var(--card-padding);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(20,20,24,0.04);
+}
+
+/* Left area inside card */
+.ticket-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Title */
+.ticket-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* meta row (badges + date) */
+.ticket-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: var(--small);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* priority badges */
+.badge.priority-high { background: linear-gradient(90deg, #ff9a9a, #ff6b6b); color: #fff; }
+.badge.priority-medium { background: linear-gradient(90deg,#ffd7a6,#ffc66b); color: #291d00; }
+.badge.priority-low { background: linear-gradient(90deg,#cfe9ff,#9fd7ff); color: #07203a; }
+
+/* status badge (light bg) */
+.badge.status {
+  background: rgba(10,10,12,0.05);
+  color: var(--muted);
+  font-weight: 600;
+  padding: 6px 10px;
+}
+
+/* right area: actions */
+.ticket-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* view button */
+.btn-view {
+  background: transparent;
+  border: 1px solid rgba(20,20,24,0.08);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* primary button (Create Ticket etc) */
+.btn-primary {
+  background: linear-gradient(90deg,var(--accent),var(--accent-2));
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* Smaller text for created date */
+.ticket-date { color: var(--muted); font-size: 13px; }
+
+/* Right column: summary card + help card */
+.side-column {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* summary card */
+.summary-card, .help-card {
+  background: var(--card-bg);
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(20,20,24,0.04);
+}
+
+/* summary header */
+.summary-card h3 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+}
+
+/* summary rows */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(10,10,12,0.03);
+  gap: 8px;
+}
+
+/* small circular pill count */
+.pill-count {
+  min-width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(124,92,240,0.08);
+  color: var(--accent-2);
+  font-weight: 700;
+}
+
+/* total footer */
+.summary-total {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-top:12px;
+  font-weight:600;
+}
+
+/* help card */
+.help-card p { color: var(--muted); margin: 0 0 12px 0; }
+.help-card .btn-contact {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(10,10,12,0.06);
+  background: transparent;
+  cursor: pointer;
+  font-weight:700;
+}
+
+/* subtle page title row */
+.page-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom: 18px;
+}
+.page-header h1 { margin:0; font-size:22px; }
+
+/* empty state */
+.empty-state {
+  background: linear-gradient(180deg,#fff,#fbfbfb);
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px dashed rgba(20,20,24,0.06);
+  text-align:center;
+  color:var(--muted);
+}

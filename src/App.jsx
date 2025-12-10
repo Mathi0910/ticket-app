@@ -14,7 +14,8 @@ import AssignedTickets from "./pages/support/AssignedTickets";
 import TicketWork from "./pages/support/TicketWork";
 import AllTickets from "./pages/admin/AllTickets";
 import AssignTicket from "./pages/admin/AssignTicket";
-import ManageUsers from "./pages/admin/ManageUSers";
+import ManageUsers from "./pages/admin/ManageUSers"; // keep exact filename you used
+import Reports from "./pages/admin/Reports";
 
 /* PrivateRoute and RoleGuard */
 function PrivateRoute({ children }) {
@@ -30,8 +31,10 @@ function RoleGuard({ allowed = [], children }) {
 
 function DashboardRouter() {
   const { user } = useAuth();
+  console.log("Routes called")
   const local = typeof window !== "undefined" ? localStorage.getItem("user") : null;
   const rawUser = user ?? (local ? JSON.parse(local) : null);
+  console.log(rawUser)
   if (!rawUser) return <Navigate to="/auth/login" replace />;
   const role = rawUser.role || rawUser.Role;
   if (role === "Admin") return <Navigate to="/admin/tickets" replace />;
@@ -68,9 +71,17 @@ export default function App() {
         }
       />
 
-      <Route path="/tickets/:id" element={<PrivateRoute><TicketView/></PrivateRoute>} />
+      {/* ticket detail (any authenticated user). If you want role restrictions, wrap with RoleGuard */}
+      <Route
+        path="/tickets/:id"
+        element={
+          <PrivateRoute>
+            <TicketView/>
+          </PrivateRoute>
+        }
+      />
 
-      {/* support */}
+      {/* support (agent) */}
       <Route
         path="/agent/tickets"
         element={
@@ -87,6 +98,18 @@ export default function App() {
           <PrivateRoute>
             <RoleGuard allowed={["Support"]}>
               <TicketWork/>
+            </RoleGuard>
+          </PrivateRoute>
+        }
+      />
+
+      {/* optional alias for support route */}
+      <Route
+        path="/support/assigned"
+        element={
+          <PrivateRoute>
+            <RoleGuard allowed={["Support"]}>
+              <AssignedTickets/>
             </RoleGuard>
           </PrivateRoute>
         }
@@ -119,6 +142,16 @@ export default function App() {
           <PrivateRoute>
             <RoleGuard allowed={["Admin"]}>
               <ManageUsers/>
+            </RoleGuard>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/reports"
+        element={
+          <PrivateRoute>
+            <RoleGuard allowed={["Admin"]}>
+              <Reports/>
             </RoleGuard>
           </PrivateRoute>
         }

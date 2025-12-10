@@ -19,7 +19,7 @@ export default function Login() {
       setError(result.error || "Invalid email or password");
       return;
     }
-    navigate("/dashboard");
+    navigate("/");
   } catch (err) {
     setError("Unexpected error");
   }
